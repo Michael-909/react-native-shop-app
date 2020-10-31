@@ -13,8 +13,8 @@ export default cartReducer = (state = initialState, action) => {
             if(state.items[action.product.id]) {
                 item = new CartItem(
                     state.items[action.product.id].quantity + 1,
-                    state.items[action.product.id].price,
-                    state.items[action.product.id].title,
+                    action.product.price,
+                    action.product.title,
                     state.items[action.product.id].sum + action.product.price
                 );
             } else {
@@ -22,7 +22,7 @@ export default cartReducer = (state = initialState, action) => {
                     1,
                     action.product.price,
                     action.product.title,
-                    action.product.sum
+                    action.product.price
                 );
             }
             return {

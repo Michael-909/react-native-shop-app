@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
+import CartItem from '../../components/shop/CartItem';
 import colors from '../../constants/colors';
 
 const CartScreen = props => {
@@ -28,9 +29,14 @@ const CartScreen = props => {
 				</Text>
 				<Button title="Order Now" color={colors.accent} disabled={cartItems.length===0} />
 			</View>
-			<View>
-				<Text>CART ITEMS</Text>
-			</View>
+			<FlatList data={cartItems} keyExtractor={item => item.productId}
+				renderItem={itemData => <CartItem 
+					quantity={itemData.item.quantity}
+					title={itemData.item.productTitle}
+					amount={itemData.item.sum}
+					onRemove={() => {}}
+				/>}
+			/>
 		</View>
 	);
 };
