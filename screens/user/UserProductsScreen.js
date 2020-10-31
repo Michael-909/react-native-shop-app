@@ -1,13 +1,15 @@
 import React from 'react';
 import { FlatList } from 'react-native-gesture-handler';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProductItem from '../../components/shop/ProductItem';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
 import { Button } from 'react-native';
+import { deleteProduct } from '../../store/actions/products';
 
 const UserProductsScreen = props => {
 	const userProducts = useSelector(state => state.products.userProducts);
+	const dispatch = useDispatch();
 
 	return <FlatList data={userProducts}
 		keyExtractor={item => item.id}
@@ -24,7 +26,7 @@ const UserProductsScreen = props => {
 				/>
 				<Button color={colors.primary}
 					title="Delete"
-					onPress={() => {}}
+					onPress={() => {dispatch(deleteProduct(itemData.item.id));}}
 				/>
 			</ProductItem>
 		}
