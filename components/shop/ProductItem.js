@@ -1,8 +1,6 @@
 import React from 'react';
-import { Button, Image, Platform, StyleSheet, Text, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, View } from 'react-native';
 import { TouchableNativeFeedback, TouchableOpacity } from 'react-native-gesture-handler';
-
-import colors from '../../constants/colors';
 
 const ProductItem = props => {
 	let TouchableCmp = TouchableOpacity;
@@ -15,7 +13,7 @@ const ProductItem = props => {
 		<View style={styles.product}>
 			<View style={styles.touchable}>
 				<View style={styles.imageContainer}>
-					<TouchableCmp onPress={props.onViewDetail} useForground>
+					<TouchableCmp onPress={props.onSelect} useForground>
 						<Image style={styles.image} source={{uri: props.image}} />
 					</TouchableCmp>
 				</View>
@@ -24,8 +22,7 @@ const ProductItem = props => {
 					<Text style={styles.price}>${props.price.toFixed(2)}</Text>
 				</View>
 				<View style={styles.actions}>
-					<Button color={colors.primary} title="View Details" onPress={props.onViewDetail}/>
-					<Button color={colors.primary} title="To Cart" onPress={props.onAddToCart} />
+					{props.children}
 				</View>
 			</View>
 		</View>
