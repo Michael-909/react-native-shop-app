@@ -8,7 +8,7 @@ export const SET_PRODUCTS = 'SET_PRODUCTS';
 export const fetchProducts = () => {
 	return async dispatch => {
 		try {
-			const response = await fetch('https://react-native-shop-app-850ef.firebaseio.com/products.jso');
+			const response = await fetch('https://react-native-shop-app-850ef.firebaseio.com/products.json');
 			if(!response.ok) {
 				throw new Error('Something went wrong!');
 			}
