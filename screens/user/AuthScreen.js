@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useCallback, useReducer } from 'react';
+import React, { useCallback, useReducer, useState } from 'react';
 import { Button, KeyboardAvoidingView, ScrollView, StyleSheet, View } from 'react-native';
 import { useDispatch } from 'react-redux';
 import Card from '../../components/UI/Card';
@@ -33,6 +33,7 @@ const formReducer = (state, action) => {
 };
 
 const AuthScreen = props => {
+	const [isSignup, setIsSignup] = useState(false);
 	const dispatch = useDispatch();
 
 	const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -47,11 +48,21 @@ const AuthScreen = props => {
 		formIsValid: false
 	});	
 
-	const signupHandler = () => {
-		dispatch(authActions.signup(
-			formState.inputValues.email,
-			formState.inputValues.password
-		));
+	const authHandler = () => {
+		let action;
+		if (isSignup) {
+			action = dispatch(authActions.signup(
+				formState.inputValues.email,
+				formState.inputValues.password
+			));
+		}
+		else {
+			action = dispatch(authActions.login(
+				formState.inputValues.email,
+				formState.inputValues.password
+			));
+		}
+		dispatch(action);
 	};
 
 	const inputChangeHandler = useCallback(
@@ -90,15 +101,15 @@ const AuthScreen = props => {
 						initialValue=""
 					/>
 					<View style={styles.buttonContainer}>
-						<Button title="Login"
+						<Button title={isSignup ? 'Sign Up' : 'Login'}
 							color={colors.primary}
-							onPress={signupHandler}
+							onPress={authHandler}
 						/>
 					</View>
 					<View style={styles.buttonContainer}>
-						<Button title="Swich to Sign Up"
+						<Button title={`Switch to ${isSignup ? 'Login' : 'Sign Up'}`}
 							color={colors.accent}
-							onPress={() => {}}
+							onPress={() => {setIsSignup(prev => !prev)}}
 						/>
 					</View>
 				</ScrollView>
