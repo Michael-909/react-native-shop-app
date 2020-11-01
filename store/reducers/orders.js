@@ -1,5 +1,5 @@
 import Order from '../../models/order';
-import { ADD_ORDER } from '../actions/orders';
+import { ADD_ORDER, SET_ORDERS } from '../actions/orders';
 
 const initialState = {
     orders: []
@@ -17,6 +17,10 @@ export default ordersReducer = (state = initialState, action) => {
             return {
                 ...state,
                 orders: state.orders.concat(newOrder)
+            };
+        case SET_ORDERS:
+            return {
+                orders: action.orders
             };
         default:
             return state;
