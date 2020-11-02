@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ProductItem from '../../components/shop/ProductItem';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import HeaderButton from '../../components/UI/HeaderButton';
-import { Alert, Button } from 'react-native';
+import { Alert, Button, Text, View } from 'react-native';
 import { deleteProduct } from '../../store/actions/products';
 
 const UserProductsScreen = props => {
@@ -21,6 +21,12 @@ const UserProductsScreen = props => {
 			}}
 		]);
 	};
+
+	if(userProducts.length === 0) {
+		return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+			<Text>Products not found.</Text>
+		</View>;
+	}
 
 	return <FlatList data={userProducts}
 		keyExtractor={item => item.id}

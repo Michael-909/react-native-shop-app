@@ -27,6 +27,12 @@ const OrdersScreen = props => {
         </View>;
     }
 
+    if(orders.length === 0) {
+		return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+			<Text>Orders not found.</Text>
+		</View>;
+	}
+
     return <FlatList
         data={orders}
         keyExtractor={item => item.id}

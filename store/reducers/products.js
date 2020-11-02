@@ -18,7 +18,7 @@ export default productsReducer = (state = initialState, action) => {
 	else if(action.type == CREATE_PRODUCT) {
 		const newProduct = new Product(
 			action.productData.id,
-			'u1',
+			action.productData.ownerId,
 			action.productData.title,
 			action.productData.imageUrl,
 			action.productData.description,
@@ -56,7 +56,7 @@ export default productsReducer = (state = initialState, action) => {
 	else if(action.type == SET_PRODUCTS) {
 		return {
 			availableProducts: action.products,
-			userProducts: action.products.filter(x => x.ownerId === 'u1')
+			userProducts: action.userProducts
 		};
 	}
 	else {

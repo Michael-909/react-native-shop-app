@@ -6,7 +6,8 @@ export const UPDATE_PRODUCT = 'UPDATE_PRODUCT';
 export const SET_PRODUCTS = 'SET_PRODUCTS';
 
 export const fetchProducts = () => {
-	return async dispatch => {
+	return async (dispatch, getState) => {
+		const userId = getState().auth.userId;
 		try {
 			const response = await fetch('https://react-native-shop-app-850ef.firebaseio.com/products.json');
 			if(!response.ok) {
@@ -17,7 +18,7 @@ export const fetchProducts = () => {
 			const loadedProducts = [];
 			for(const key in result) {
 				loadedProducts.push(new Product(
-					key, 'u1',
+					key, result[key].ownerId ?? 'null',
 					result[key].title,
 					result[key].imageUrl,
 					result[key].description,
@@ -25,7 +26,11 @@ export const fetchProducts = () => {
 				));
 			}
 
-			dispatch({type: SET_PRODUCTS, products: loadedProducts});
+			dispatch({
+				type: SET_PRODUCTS,
+				products: loadedProducts,
+				userProducts: loadedProducts.filter(p => p.ownerId === userId)
+			});
 		} catch(err) {
 			throw err;
 		}
@@ -49,6 +54,7 @@ export const deleteProduct = productId => {
 
 export const createProduct = (title, description, imageUrl, price) => {
 	return async (dispatch, getState) => {
+		const userId = getState().auth.userId;
 		const token = getState().auth.token;
 		const response = await fetch(`https://react-native-shop-app-850ef.firebaseio.com/products.json?auth=${token}`, {
 			method: 'POST',
@@ -59,7 +65,8 @@ export const createProduct = (title, description, imageUrl, price) => {
 				title,
 				description,
 				imageUrl,
-				price
+				price,
+				ownerId: userId
 			})
 		});
 		if(!response.ok) {
@@ -74,7 +81,8 @@ export const createProduct = (title, description, imageUrl, price) => {
 				title,
 				description,
 				imageUrl,
-				price
+				price,
+				ownerId: userId
 			}
 		});
 	};
