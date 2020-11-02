@@ -33,9 +33,10 @@ export const fetchProducts = () => {
 };
 
 export const deleteProduct = productId => {
-	return async dispatch => {
+	return async (dispatch, getState) => {
+		const token = getState().auth.token;
 		await fetch(
-			`https://react-native-shop-app-850ef.firebaseio.com/products/${productId}.json`,
+			`https://react-native-shop-app-850ef.firebaseio.com/products/${productId}.json?${token}`,
 			{ method: 'DELETE'}
 		);
 
@@ -47,8 +48,9 @@ export const deleteProduct = productId => {
 };
 
 export const createProduct = (title, description, imageUrl, price) => {
-	return async dispatch => {
-		const response = await fetch('https://react-native-shop-app-850ef.firebaseio.com/products.json', {
+	return async (dispatch, getState) => {
+		const token = getState().auth.token;
+		const response = await fetch(`https://react-native-shop-app-850ef.firebaseio.com/products.json?auth=${token}`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -79,18 +81,21 @@ export const createProduct = (title, description, imageUrl, price) => {
 };
 
 export const updateProduct = (id, title, description, imageUrl) => {
-	return async dispatch => {
-		const response = await fetch(`https://react-native-shop-app-850ef.firebaseio.com/products/${id}.json`, {
-			method: 'PATCH',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				title,
-				description,
-				imageUrl,
-			})
-		});
+	return async (dispatch, getState) => {
+		const token = getState().auth.token;
+		const response = await fetch(
+			`https://react-native-shop-app-850ef.firebaseio.com/products/${id}.json?auth=${token}`, {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					title,
+					description,
+					imageUrl,
+				}
+			)}
+		);
 		if(!response.ok) {
 			throw new Error('Something went wrong!');
 		}

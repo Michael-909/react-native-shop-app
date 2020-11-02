@@ -30,6 +30,8 @@ export const signup = (email, password ) => {
 
 		dispatch({
 			type: SIGNUP,
+			token: result.idToken,
+			userId: result.localId
 		});
 	};
 };
@@ -64,7 +66,9 @@ export const login = (email, password ) => {
 		const result = await response.json();
 
 		dispatch({
-			type: LOGIN
+			type: LOGIN,
+			token: result.idToken,
+			userId: result.localId
 		});
 	};
 };

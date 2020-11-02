@@ -58,7 +58,13 @@ const EditProductScreen = props => {
 		formIsValid: editedProduct ? true : false
 	});
 
-	const submitHandler = useCallback(async () => {
+	useEffect(() => {
+		if (error) {
+		  Alert.alert('An error occurred!', error, [{ text: 'Okay' }]);
+		}
+	}, [error]);
+
+	  const submitHandler = useCallback(async () => {
 		if(!formState.formIsValid) {
 			Alert.alert('Wrong Input!', 'Please check the errors', [{text: 'Okay'}])
 			return;
@@ -71,11 +77,11 @@ const EditProductScreen = props => {
 			} else {
 				await dispatch(createProduct(formState.inputValues.title, formState.inputValues.description, formState.inputValues.imageUrl, +formState.inputValues.price));
 			}
+			props.navigation.goBack();
 		} catch(err) {
 			setError(err.message);
 		}
 		setIsLoading(false);
-		props.navigation.goBack();
 	}, [dispatch, prodId, formState]);
 
 	useEffect(() => {
