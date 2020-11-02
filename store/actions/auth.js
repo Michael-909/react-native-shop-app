@@ -1,3 +1,5 @@
+import { AsyncStorage } from '@react-native-community/async-storage';
+
 export const SIGNUP = 'SIGNUP';
 export const LOGIN = 'LOGIN';
 
@@ -33,6 +35,7 @@ export const signup = (email, password ) => {
 			token: result.idToken,
 			userId: result.localId
 		});
+		saveDataToStorage(result.idToken, result.localId);
 	};
 };
 
@@ -70,5 +73,13 @@ export const login = (email, password ) => {
 			token: result.idToken,
 			userId: result.localId
 		});
+		saveDataToStorage(result.idToken, result.localId);
 	};
+};
+
+const saveDataToStorage = (token, userId) => {
+	AsyncStorage.setItem('userData', JSON.stringify({
+		token: token,
+		userId: userId
+	}));
 };
